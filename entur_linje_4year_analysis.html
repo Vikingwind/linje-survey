@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entur Linje Designsystem – 4-års analyse 2022–2025</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Fraunces:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --dark: #181C20;
+    --coral: #F96167;
+    --teal: #0B7285;
+    --green: #2B8A3E;
+    --amber: #E67700;
+    --purple: #7048E8;
+    --blue: #1A73E8;
+    --surface: #F4F5F7;
+    --card: #FFFFFF;
+    --text: #292D32;
+    --muted: #6B7280;
+    --border: #E5E7EB;
+    --r: 14px;
+    /* Year colors */
+    --y22: #7048E8;
+    --y23: #0B7285;
+    --y24: #E67700;
+    --y25: #F96167;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--surface); color:var(--text); line-height:1.6; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--dark) 0%, #2C3440 60%, #1E3A4C 100%);
+    color:#fff; padding:56px 40px 48px; position:relative; overflow:hidden;
+  }
+  .hero::before { content:''; position:absolute; top:-100px; right:-60px; width:350px; height:350px; background:var(--coral); border-radius:50%; opacity:.12; filter:blur(70px); }
+  .hero::after { content:''; position:absolute; bottom:-80px; left:25%; width:300px; height:300px; background:var(--teal); border-radius:50%; opacity:.1; filter:blur(60px); }
+  .hero h1 { font-family:'Fraunces',serif; font-size:2.5rem; font-weight:900; letter-spacing:-.02em; position:relative; z-index:1; }
+  .hero .sub { opacity:.7; margin-top:6px; font-size:1rem; position:relative; z-index:1; }
+  .badge { display:inline-block; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:20px; padding:3px 14px; font-size:.8rem; margin-bottom:14px; position:relative; z-index:1; }
+  .hero-stats { display:flex; gap:32px; margin-top:28px; position:relative; z-index:1; flex-wrap:wrap; }
+  .hero-stat .val { font-family:'Fraunces',serif; font-size:2.2rem; font-weight:900; }
+  .hero-stat .lbl { font-size:.78rem; opacity:.6; }
+
+  .container { max-width:1120px; margin:0 auto; padding:0 24px; }
+
+  /* NAV */
+  .nav { background:var(--card); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; padding:0 24px; }
+  .nav-inner { max-width:1120px; margin:0 auto; display:flex; gap:4px; overflow-x:auto; }
+  .nav a { padding:12px 16px; font-size:.82rem; font-weight:600; color:var(--muted); text-decoration:none; border-bottom:3px solid transparent; white-space:nowrap; transition:.2s; }
+  .nav a:hover, .nav a.active { color:var(--coral); border-bottom-color:var(--coral); }
+
+  /* SECTIONS */
+  .section { margin:40px auto; max-width:1120px; padding:0 24px; }
+  .section-title { font-family:'Fraunces',serif; font-size:1.45rem; font-weight:700; margin-bottom:16px; padding-left:16px; border-left:4px solid var(--coral); }
+  .section-desc { color:var(--muted); font-size:.88rem; margin-bottom:20px; margin-top:-8px; }
+
+  .card { background:var(--card); border-radius:var(--r); padding:28px; box-shadow:0 1px 6px rgba(0,0,0,.04); border:1px solid var(--border); margin-bottom:16px; }
+  .card h3 { font-size:.95rem; font-weight:700; margin-bottom:14px; }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+  @media(max-width:800px) { .two-col,.three-col { grid-template-columns:1fr; } }
+
+  /* YEAR LEGEND */
+  .year-legend { display:flex; gap:16px; margin-bottom:14px; font-size:.8rem; font-weight:600; flex-wrap:wrap; }
+  .yl { display:flex; align-items:center; gap:5px; }
+  .yl .dot { width:14px; height:14px; border-radius:4px; }
+
+  /* TREND CHART (CSS-based) */
+  .trend-chart { position:relative; height:200px; margin:16px 0 8px; }
+  .trend-grid { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-between; }
+  .trend-gridline { border-top:1px dashed #E5E7EB; position:relative; }
+  .trend-gridline span { position:absolute; left:-30px; top:-8px; font-size:.68rem; color:var(--muted); }
+  .trend-bars { position:absolute; bottom:0; left:40px; right:0; top:0; display:flex; align-items:flex-end; justify-content:space-around; gap:4px; padding-bottom:24px; }
+  .trend-group { display:flex; flex-direction:column; align-items:center; gap:2px; flex:1; }
+  .trend-group-bars { display:flex; align-items:flex-end; gap:3px; height:160px; }
+  .trend-bar { width:22px; border-radius:4px 4px 0 0; transition:.3s; position:relative; min-height:2px; }
+  .trend-bar:hover { opacity:.8; }
+  .trend-bar .tip { display:none; position:absolute; top:-20px; left:50%; transform:translateX(-50%); font-size:.68rem; font-weight:700; white-space:nowrap; }
+  .trend-bar:hover .tip { display:block; }
+  .trend-label { font-size:.72rem; color:var(--muted); font-weight:600; margin-top:4px; }
+
+  /* LINE CHART simulated with SVG */
+  .line-chart-wrap { position:relative; padding:10px 0 0 36px; }
+  .line-chart-wrap svg { width:100%; height:180px; }
+  .axis-label { font-size:.68rem; fill:var(--muted); }
+
+  /* HORIZONTAL BARS */
+  .bar-row { display:flex; align-items:center; margin-bottom:7px; gap:8px; }
+  .bar-label { flex:0 0 160px; font-size:.8rem; text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .bar-track { flex:1; height:24px; background:#EEF0F3; border-radius:5px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:5px; display:flex; align-items:center; padding-left:8px; font-size:.72rem; font-weight:700; color:#fff; min-width:28px; }
+  .bar-value { flex:0 0 36px; font-size:.8rem; font-weight:600; text-align:right; }
+
+  /* STACKED BAR */
+  .sat-row { margin-bottom:10px; }
+  .sat-label { font-size:.8rem; font-weight:500; margin-bottom:2px; }
+  .sat-meta { font-size:.7rem; color:var(--muted); }
+  .stacked-bar { display:flex; height:24px; border-radius:5px; overflow:hidden; }
+  .seg { display:flex; align-items:center; justify-content:center; font-size:.65rem; font-weight:600; color:#fff; }
+  .s5 { background:#2B8A3E; } .s4 { background:#5C940D; } .s3 { background:#E67700; } .s2 { background:#E03131; } .s1 { background:#862E9C; }
+
+  .legend { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:12px; font-size:.74rem; }
+  .legend-item { display:flex; align-items:center; gap:4px; }
+  .legend-dot { width:11px; height:11px; border-radius:3px; }
+
+  /* SUMMARY BOXES */
+  .summary-green { background:linear-gradient(135deg,#F0FDF4,#ECFDF5); border:1px solid #BBF7D0; border-radius:var(--r); padding:24px; margin-bottom:16px; }
+  .summary-amber { background:linear-gradient(135deg,#FFFBEB,#FEF3C7); border:1px solid #FDE68A; border-radius:var(--r); padding:24px; margin-bottom:16px; }
+  .summary-red { background:linear-gradient(135deg,#FEF2F2,#FEE2E2); border:1px solid #FECACA; border-radius:var(--r); padding:24px; margin-bottom:16px; }
+  .summary-blue { background:linear-gradient(135deg,#EFF6FF,#DBEAFE); border:1px solid #BFDBFE; border-radius:var(--r); padding:24px; margin-bottom:16px; }
+  [class^="summary-"] h3 { font-size:.95rem; margin-bottom:8px; }
+  [class^="summary-"] p, [class^="summary-"] li { font-size:.86rem; line-height:1.7; }
+  [class^="summary-"] ul { padding-left:18px; margin-top:4px; }
+
+  /* QUOTE */
+  .quotes-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px; }
+  .quote-card { background:var(--surface); border-radius:10px; padding:14px; font-size:.82rem; font-style:italic; border-left:3px solid var(--teal); }
+  .quote-card .meta { font-style:normal; font-size:.7rem; color:var(--muted); margin-top:6px; font-weight:600; }
+
+  /* THEME LIST */
+  .theme-list { list-style:none; }
+  .theme-list li { padding:9px 0; border-bottom:1px solid var(--border); display:flex; align-items:baseline; gap:8px; font-size:.86rem; }
+  .theme-list li:last-child { border-bottom:none; }
+  .theme-count { background:var(--coral); color:#fff; font-size:.7rem; font-weight:700; padding:2px 7px; border-radius:10px; white-space:nowrap; }
+  .theme-years { font-size:.7rem; color:var(--muted); font-weight:500; }
+
+  /* ACTION CARDS */
+  .action-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px; }
+  .action-card { background:var(--card); border-radius:var(--r); padding:22px; border:1px solid var(--border); border-top:4px solid var(--coral); }
+  .action-card.green { border-top-color:var(--green); }
+  .action-card.teal { border-top-color:var(--teal); }
+  .action-card.purple { border-top-color:var(--purple); }
+  .action-card.amber { border-top-color:var(--amber); }
+  .action-card h4 { font-size:.9rem; margin-bottom:6px; }
+  .action-card p { font-size:.82rem; color:var(--muted); line-height:1.6; }
+  .action-card .priority { display:inline-block; font-size:.68rem; font-weight:700; padding:2px 8px; border-radius:8px; margin-bottom:8px; }
+  .priority.high { background:#FEE2E2; color:#991B1B; }
+  .priority.med { background:#FEF3C7; color:#92400E; }
+  .priority.low { background:#DBEAFE; color:#1E40AF; }
+
+  .footer { text-align:center; padding:40px 24px; color:var(--muted); font-size:.76rem; }
+
+  /* DELTA INDICATOR */
+  .delta { font-size:.72rem; font-weight:700; padding:1px 6px; border-radius:6px; margin-left:4px; }
+  .delta.up { background:#D3F9D8; color:#2B8A3E; }
+  .delta.down { background:#FFE3E3; color:#C92A2A; }
+  .delta.flat { background:#E9ECEF; color:#495057; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="container">
+    <div class="badge">📊 Longitudinell analyse · 4 år</div>
+    <h1>Entur Linje Designsystem<br>Spørreundersøkelser 2022–2025</h1>
+    <p class="sub">Trender, tilbakemeldinger og forbedringsforslag basert på 116 respondenter over fire år</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="val">116</div><div class="lbl">Respondenter totalt</div></div>
+      <div class="hero-stat"><div class="val">4.3</div><div class="lbl">Gjennomsnittlig tilfredshet</div></div>
+      <div class="hero-stat"><div class="val">93%</div><div class="lbl">Sparer tid (snitt)</div></div>
+      <div class="hero-stat"><div class="val">92%</div><div class="lbl">Bedre produkter (snitt)</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <div class="nav-inner">
+    <a href="#sammendrag" class="active">Sammendrag</a>
+    <a href="#trender">Trender</a>
+    <a href="#tilfredshet">Tilfredshet</a>
+    <a href="#verdi">Verdi</a>
+    <a href="#kommunikasjon">Kommunikasjon</a>
+    <a href="#kvalitativ">Tilbakemeldinger</a>
+    <a href="#forslag">Forbedringsforslag</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SAMMENDRAG -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="sammendrag">
+  <h2 class="section-title">Sammendrag over 4 år</h2>
+
+  <div class="summary-green">
+    <h3>✅ Vedvarende styrker (konsistent på tvers av alle år)</h3>
+    <ul>
+      <li><strong>Høy totaltilfredshet:</strong> Gjennomsnittet har ligget mellom 4.1 og 4.5 alle fire år. Ingen respondent har noensinne gitt 1 av 5.</li>
+      <li><strong>Tidsbesparelse:</strong> Mellom 81–100% opplever å spare tid hvert år. Hovedårsak: slipper å bygge og vedlikeholde egne komponenter.</li>
+      <li><strong>Slack-kanalen er gullstandarden:</strong> Høyeste tilfredshet blant alle delene hvert eneste år (4.4–4.6). Teamet roses gjentatte ganger for rask og vennlig respons.</li>
+      <li><strong>Visuell konsistens:</strong> 87–100% bekrefter at designsystemet sikrer konsistens på tvers av team.</li>
+      <li><strong>Teamet verdsettes:</strong> Kontaktens nytte scorer konsekvent 4.2–4.8. «Flinke folk», «rask respons» og «hyggelig service» er gjentatte utsagn gjennom alle fire år.</li>
+    </ul>
+  </div>
+
+  <div class="summary-amber">
+    <h3>⚠️ Gjentakende utfordringer (nevnt i ≥2 år)</h3>
+    <ul>
+      <li><strong>B2B / interne verktøy underdekket:</strong> Nevnt hvert år siden 2022. Komponentene oppleves som primært designet for B2C/reisende. Partnere og fagsystembrukere mangler mer komplekse komponenter.</li>
+      <li><strong>Farger og tokens forvirrende:</strong> Eskalerende problem. Fra «noen fargenavn er ulike» (2024) til bred frustrasjon over semantiske farger, contrast mode og valg av fargebibliotek (2025).</li>
+      <li><strong>Figma ↔ React ute av synk:</strong> Nevnt fra 2023 og fremover. Komponenter i Figma matcher ikke alltid det som finnes i kode.</li>
+      <li><strong>Kapasitet/leveransetid:</strong> 2022–2023 pekte gjentatte ganger på for lite kapasitet i teamet. Har bedret seg, men fikser kan fortsatt ta tid (2025).</li>
+      <li><strong>Versjonering og pakkeavhengigheter:</strong> Nevnt i 2022, 2024 og tydelig i 2025. Separate pakkeversioner skaper forvirring og smerte.</li>
+    </ul>
+  </div>
+
+  <div class="summary-red">
+    <h3>📉 Bekymringsfulle trender</h3>
+    <ul>
+      <li><strong>Totaltilfredshet synker gradvis:</strong> Fra 4.48 (2022) → 4.29 (2023) → 4.39 (2024) → 4.13 (2025). Mulig at den kraftige økningen i respondenter (fra 25 til 47) fanger flere perspektiver, men nedgangen er konsistent.</li>
+      <li><strong>«Sparer tid»-andelen faller:</strong> 100% (2022) → 95% (2023) → 96% (2024) → 81% (2025). Backend-utviklere og de som jobber med open source/whitelabel trekker ned.</li>
+      <li><strong>Kontaktens nytte synker:</strong> 4.76 (2022) → 4.43 (2023) → 4.52 (2024) → 4.22 (2025). Kan skyldes at flere har kontakt (bredere brukerbase), men verdt å følge med.</li>
+      <li><strong>Flere vet ikke om bidragsmuligheter:</strong> I 2025 svarer 11% «visste ikke at man kan bidra» og 15% «vil gjerne men har ikke ennå» — signalet er at onboarding for bidrag mangler.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- TRENDER -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="trender">
+  <h2 class="section-title">Nøkkeltrender 2022–2025</h2>
+
+  <div class="year-legend">
+    <div class="yl"><div class="dot" style="background:var(--y22)"></div> 2022 (n=25)</div>
+    <div class="yl"><div class="dot" style="background:var(--y23)"></div> 2023 (n=21)</div>
+    <div class="yl"><div class="dot" style="background:var(--y24)"></div> 2024 (n=23)</div>
+    <div class="yl"><div class="dot" style="background:var(--y25)"></div> 2025 (n=47)</div>
+  </div>
+
+  <div class="two-col">
+    <!-- Overall Satisfaction Trend -->
+    <div class="card">
+      <h3>Totaltilfredshet (1–5) <span class="delta down">↓ 0.35</span></h3>
+      <div style="display:flex;align-items:flex-end;gap:16px;height:160px;padding:10px 0 24px;">
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y22);height:128px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.85rem;">4.48</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2022</div>
+        </div>
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y23);height:114px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.85rem;">4.29</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2023</div>
+        </div>
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y24);height:122px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.85rem;">4.39</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2024</div>
+        </div>
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y25);height:100px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.85rem;">4.13</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2025</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Time saving trend -->
+    <div class="card">
+      <h3>«Sparer tid» (% Ja) <span class="delta down">↓ 19pp</span></h3>
+      <div style="display:flex;align-items:flex-end;gap:16px;height:160px;padding:10px 0 24px;">
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y22);height:150px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.85rem;">100%</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2022</div>
+        </div>
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y23);height:142px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.85rem;">95%</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2023</div>
+        </div>
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y24);height:144px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.85rem;">96%</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2024</div>
+        </div>
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y25);height:122px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.85rem;">81%</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <!-- Better products -->
+    <div class="card">
+      <h3>«Bedre produkter» (% Ja) <span class="delta down">↓ 9pp</span></h3>
+      <div style="display:flex;align-items:flex-end;gap:16px;height:140px;padding:10px 0 24px;">
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y22);height:120px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.82rem;">96%</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2022</div>
+        </div>
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y23);height:118px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.82rem;">95%</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2023</div>
+        </div>
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y24);height:113px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.82rem;">91%</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2024</div>
+        </div>
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y25);height:108px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.82rem;">87%</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2025</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact usefulness -->
+    <div class="card">
+      <h3>Nytte av kontakt (1–5) <span class="delta down">↓ 0.54</span></h3>
+      <div style="display:flex;align-items:flex-end;gap:16px;height:140px;padding:10px 0 24px;">
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y22);height:120px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.82rem;">4.76</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2022</div>
+        </div>
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y23);height:104px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.82rem;">4.43</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2023</div>
+        </div>
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y24);height:110px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.82rem;">4.52</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2024</div>
+        </div>
+        <div style="flex:1;text-align:center">
+          <div style="background:var(--y25);height:94px;border-radius:6px 6px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:8px;color:#fff;font-weight:700;font-size:.82rem;">4.22</div>
+          <div style="font-size:.72rem;color:var(--muted);margin-top:4px">2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Respondent growth -->
+  <div class="card">
+    <h3>Respondentprofil over tid</h3>
+    <div class="two-col" style="gap:24px">
+      <div>
+        <h3 style="font-size:.85rem;color:var(--muted);margin-bottom:10px">Antall respondenter</h3>
+        <div style="display:flex;align-items:flex-end;gap:12px;height:100px;">
+          <div style="flex:1;text-align:center"><div style="background:var(--y22);height:53px;border-radius:5px 5px 0 0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.82rem;">25</div><div style="font-size:.7rem;color:var(--muted);margin-top:3px">2022</div></div>
+          <div style="flex:1;text-align:center"><div style="background:var(--y23);height:45px;border-radius:5px 5px 0 0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.82rem;">21</div><div style="font-size:.7rem;color:var(--muted);margin-top:3px">2023</div></div>
+          <div style="flex:1;text-align:center"><div style="background:var(--y24);height:49px;border-radius:5px 5px 0 0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.82rem;">23</div><div style="font-size:.7rem;color:var(--muted);margin-top:3px">2024</div></div>
+          <div style="flex:1;text-align:center"><div style="background:var(--y25);height:100px;border-radius:5px 5px 0 0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.82rem;">47</div><div style="font-size:.7rem;color:var(--muted);margin-top:3px">2025</div></div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:.85rem;color:var(--muted);margin-bottom:10px">Rollesammensetning</h3>
+        <p style="font-size:.82rem;line-height:1.8">
+          <strong>2022–2023:</strong> Dominert av frontend-utviklere (~50%) og UX designere (~20%). Få backend-utviklere deltok aktivt.<br>
+          <strong>2024:</strong> Mer balansert — UX/UI designere, frontend og fullstack jevnere fordelt. Tjenestedesignere øker.<br>
+          <strong>2025:</strong> Dobbelt så mange respondenter. Fullstack-utviklere (14), frontend (14), designere (12), backend (6) og tjenestedesignere (6). Bredere representasjon = mer nyansert bilde.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- TILFREDSHET MED DELER -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="tilfredshet">
+  <h2 class="section-title">Tilfredshet med designsystemets deler</h2>
+  <p class="section-desc">Score blant aktive brukere (de som svarte «Bruker ikke» er ekskludert).</p>
+
+  <div class="card">
+    <h3>Gjennomsnittlig tilfredshet per del (1–5)</h3>
+    <div class="year-legend">
+      <div class="yl"><div class="dot" style="background:var(--y22)"></div> 2022</div>
+      <div class="yl"><div class="dot" style="background:var(--y23)"></div> 2023</div>
+      <div class="yl"><div class="dot" style="background:var(--y24)"></div> 2024</div>
+      <div class="yl"><div class="dot" style="background:var(--y25)"></div> 2025</div>
+    </div>
+
+    <table style="width:100%;border-collapse:collapse;font-size:.82rem;">
+      <thead><tr style="border-bottom:2px solid var(--border);">
+        <th style="text-align:left;padding:8px 4px;">Del</th>
+        <th style="text-align:center;padding:8px 4px;color:var(--y22)">2022</th>
+        <th style="text-align:center;padding:8px 4px;color:var(--y23)">2023</th>
+        <th style="text-align:center;padding:8px 4px;color:var(--y24)">2024</th>
+        <th style="text-align:center;padding:8px 4px;color:var(--y25)">2025</th>
+        <th style="text-align:center;padding:8px 4px;">Trend</th>
+      </tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 4px;font-weight:600">#talk-designsystem (Slack)</td>
+          <td style="text-align:center">4.56</td><td style="text-align:center">4.44</td><td style="text-align:center">4.47</td><td style="text-align:center">4.51</td>
+          <td style="text-align:center"><span class="delta flat">→ stabil</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 4px;font-weight:600">Dokumentasjon</td>
+          <td style="text-align:center">4.40</td><td style="text-align:center">4.33</td><td style="text-align:center">4.21</td><td style="text-align:center">4.17</td>
+          <td style="text-align:center"><span class="delta down">↓ 0.23</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 4px;font-weight:600">React-komponentbibliotek</td>
+          <td style="text-align:center">4.30</td><td style="text-align:center">4.58</td><td style="text-align:center">4.18</td><td style="text-align:center">4.00</td>
+          <td style="text-align:center"><span class="delta down">↓ 0.30</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 4px;font-weight:600">Figma UI Library</td>
+          <td style="text-align:center">4.18</td><td style="text-align:center">4.27</td><td style="text-align:center">4.18</td><td style="text-align:center">4.05</td>
+          <td style="text-align:center"><span class="delta down">↓ 0.13</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px 4px;font-weight:600">Fargetokens (Figma) <em style="font-size:.72rem">(fra 2024)</em></td>
+          <td style="text-align:center;color:var(--muted)">—</td><td style="text-align:center;color:var(--muted)">—</td><td style="text-align:center">4.33</td><td style="text-align:center;color:var(--coral);font-weight:700">3.76</td>
+          <td style="text-align:center"><span class="delta down">↓ 0.57</span></td>
+        </tr>
+        <tr>
+          <td style="padding:8px 4px;font-weight:600">NPM-sidene</td>
+          <td style="text-align:center">3.50</td><td style="text-align:center">4.00</td><td style="text-align:center">4.20</td><td style="text-align:center">3.67</td>
+          <td style="text-align:center"><span class="delta flat">→ varierer</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:.78rem;color:var(--muted);margin-top:12px">⚠️ Fargetokens har den største nedgangen og laveste scoren i 2025 (3.76). Dette korrelerer sterkt med den kvalitative tilbakemeldingen om forvirring rundt semantiske farger og dark/contrast mode.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- VERDI & IMPACT -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="verdi">
+  <h2 class="section-title">Verdi & Impact over tid</h2>
+
+  <div class="card">
+    <h3>Sammenligning av verdimetriker</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:.84rem;">
+      <thead><tr style="border-bottom:2px solid var(--border);">
+        <th style="text-align:left;padding:8px">Metrikk</th>
+        <th style="text-align:center;padding:8px;color:var(--y22)">2022</th>
+        <th style="text-align:center;padding:8px;color:var(--y23)">2023</th>
+        <th style="text-align:center;padding:8px;color:var(--y24)">2024</th>
+        <th style="text-align:center;padding:8px;color:var(--y25)">2025</th>
+      </tr></thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px">Totaltilfredshet (1–5)</td>
+          <td style="text-align:center;font-weight:700">4.48</td><td style="text-align:center">4.29</td><td style="text-align:center">4.39</td><td style="text-align:center">4.13</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px">Sparer tid (% Ja)</td>
+          <td style="text-align:center;font-weight:700">100%</td><td style="text-align:center">95%</td><td style="text-align:center">96%</td><td style="text-align:center">81%</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px">Bedre produkter (% Ja)</td>
+          <td style="text-align:center;font-weight:700">96%</td><td style="text-align:center">95%</td><td style="text-align:center">91%</td><td style="text-align:center">87%</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px">Visuell konsistens (% Ja)</td>
+          <td style="text-align:center">96%</td><td style="text-align:center;font-weight:700">100%</td><td style="text-align:center;font-weight:700">100%</td><td style="text-align:center">87%</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px">Fornøyd med info (1–5)</td>
+          <td style="text-align:center;font-weight:700">4.44</td><td style="text-align:center">4.24</td><td style="text-align:center">4.35</td><td style="text-align:center">4.32</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border);">
+          <td style="padding:8px">Nytte av kontakt (1–5)</td>
+          <td style="text-align:center;font-weight:700">4.76</td><td style="text-align:center">4.43</td><td style="text-align:center">4.52</td><td style="text-align:center">4.22</td>
+        </tr>
+        <tr>
+          <td style="padding:8px">Får med seg oppdateringer (% Ja)</td>
+          <td style="text-align:center">64%</td><td style="text-align:center;font-weight:700">81%</td><td style="text-align:center">73%</td><td style="text-align:center">74%</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:.78rem;color:var(--muted);margin-top:12px">
+      <strong>Tolkning:</strong> De fleste metrikkene er fortsatt sterke i absolutte tall (4.1+ / 80%+), men trenden er nedadgående. 2025-undersøkelsen hadde dobbelt så mange respondenter med bredere rollesammensetning, noe som sannsynligvis gir et mer realistisk bilde enn de tidlige årene der frontend-utviklere (kjernebrukerne) var overrepresentert.
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- KOMMUNIKASJON -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="kommunikasjon">
+  <h2 class="section-title">Kommunikasjon & Kanaler</h2>
+  <div class="two-col">
+    <div class="card">
+      <h3>Foretrukne kanaler (alle år)</h3>
+      <div class="bar-row"><div class="bar-label">Slack</div><div class="bar-track"><div class="bar-fill" style="width:96%;background:var(--teal)">111</div></div></div>
+      <div class="bar-row"><div class="bar-label">Periodisk demo</div><div class="bar-track"><div class="bar-fill" style="width:35%;background:var(--green)">40</div></div></div>
+      <div class="bar-row"><div class="bar-label">Linje / design.entur</div><div class="bar-track"><div class="bar-fill" style="width:32%;background:var(--blue)">37</div></div></div>
+      <div class="bar-row"><div class="bar-label">Figma</div><div class="bar-track"><div class="bar-fill" style="width:13%;background:var(--purple)">15</div></div></div>
+      <div class="bar-row"><div class="bar-label">E-post</div><div class="bar-track"><div class="bar-fill" style="width:7%;background:var(--amber)">8</div></div></div>
+      <p style="font-size:.78rem;color:var(--muted);margin-top:10px">Slack har vært #1 hvert år med ~100% oppslutning. Dokumentasjonssiden har vokst som kanal fra 2024.</p>
+    </div>
+    <div class="card">
+      <h3>Bidrag til designsystemet</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:.82rem;">
+        <thead><tr style="border-bottom:2px solid var(--border);">
+          <th style="text-align:left;padding:6px">År</th><th style="text-align:center;padding:6px">Ja</th><th style="text-align:center;padding:6px">Nei</th><th style="text-align:center;padding:6px">Vil gjerne / vet ikke</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">2022</td><td style="text-align:center">60%</td><td style="text-align:center">24%</td><td style="text-align:center">16%</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">2023</td><td style="text-align:center">67%</td><td style="text-align:center">14%</td><td style="text-align:center">19%</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:6px">2024</td><td style="text-align:center">64%</td><td style="text-align:center">9%</td><td style="text-align:center">27%</td></tr>
+          <tr><td style="padding:6px">2025</td><td style="text-align:center">53%</td><td style="text-align:center">19%</td><td style="text-align:center;color:var(--coral);font-weight:600">28%</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:.78rem;color:var(--muted);margin-top:10px">Andelen som har bidratt synker i 2025, mens «vil gjerne / visste ikke at man kan» vokser. Signal: bidragsveien er uklar for nye brukere.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- KVALITATIV -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="kvalitativ">
+  <h2 class="section-title">Kvalitative tilbakemeldinger – Temaer på tvers av år</h2>
+
+  <div class="card">
+    <h3>🔴 Gjentakende problemer (sortert etter frekvens og varighet)</h3>
+    <ul class="theme-list">
+      <li>
+        <span class="theme-count">~20×</span>
+        <div><strong>B2B/interne verktøy underdekket</strong><br>
+        <span class="theme-years">2022 · 2023 · 2024 · 2025</span><br>
+        Designsystemet oppleves som primært B2C-rettet. Mangler komplekse komponenter for fagsystemer, partner-portaler og admin-flater. Tabeller, avanserte filtre, autocomplete og layoutkomponenter etterspørres.</div>
+      </li>
+      <li>
+        <span class="theme-count">~15×</span>
+        <div><strong>Farger og tokens forvirrende</strong><br>
+        <span class="theme-years">2024 · 2025 (eskalerende)</span><br>
+        Semantiske farger, contrast mode, dark mode og valg av fargebibliotek i Figma skaper frustrasjon. Navngivning mellom Figma og kode er inkonsistent. For mange fargebiblioteker å velge mellom.</div>
+      </li>
+      <li>
+        <span class="theme-count">~10×</span>
+        <div><strong>Figma ↔ React ute av synk</strong><br>
+        <span class="theme-years">2023 · 2024 · 2025</span><br>
+        Komponenter i Figma matcher ikke alltid det som finnes i kode. Designere og utviklere opplever ulike implementasjoner og manglende 1:1-mapping.</div>
+      </li>
+      <li>
+        <span class="theme-count">~8×</span>
+        <div><strong>Versjonering og pakkeavhengigheter</strong><br>
+        <span class="theme-years">2022 · 2024 · 2025</span><br>
+        Separate versjoner per pakke skaper forvirring. Uklart hvilke pakker som hører sammen. Breaking changes er smertefulle. Forslag om felles mega-pakke (ref. NAV/Aksel).</div>
+      </li>
+      <li>
+        <span class="theme-count">~7×</span>
+        <div><strong>Kapasitet og leveransetid</strong><br>
+        <span class="theme-years">2022 · 2023 (sterkest)</span><br>
+        «Bare én utvikler» var gjentakende bekymring i 2022–2023. Har bedret seg betydelig, men noen nevner fortsatt at fikser kan ta tid i 2025.</div>
+      </li>
+      <li>
+        <span class="theme-count">~5×</span>
+        <div><strong>Dokumentasjon ujevn / vanskelig å søke</strong><br>
+        <span class="theme-years">2023 · 2025</span><br>
+        Noen komponenter er godt dokumentert, andre mangler detaljer og eksempler. Søkefunksjonen oppleves som mangelfull.</div>
+      </li>
+      <li>
+        <span class="theme-count">~4×</span>
+        <div><strong>Open source / whitelabel</strong><br>
+        <span class="theme-years">2025 (ny)</span><br>
+        Flere ønsker at designsystemet var åpent tilgjengelig for bruk i open source- og partnerprosjekter.</div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>🟢 Gjentakende ros (hva folk elsker)</h3>
+    <ul class="theme-list">
+      <li><span class="theme-count" style="background:var(--green)">Alle år</span> <strong>Rask og vennlig respons fra teamet</strong> – «Alltid hyggelige svar fra dyktige folk», «svarer raskt på Slack»</li>
+      <li><span class="theme-count" style="background:var(--green)">Alle år</span> <strong>Sparer tid med ferdige komponenter</strong> – «Slipper å lage egne implementasjoner», «kan fokusere på logikk»</li>
+      <li><span class="theme-count" style="background:var(--green)">Alle år</span> <strong>Konsistens på tvers</strong> – «Veldig mye raskere å oppnå lik stil», «god profil, lett gjenkjennbar»</li>
+      <li><span class="theme-count" style="background:var(--green)">2023+</span> <strong>God dokumentasjon</strong> – «Linje er en gullressurs», «oversiktlig», «lett å ta i bruk»</li>
+      <li><span class="theme-count" style="background:var(--green)">2024+</span> <strong>Stabilt og pålitelig</strong> – «Lite bugs», «ganske pålitelig», «hyppige oppdateringer»</li>
+    </ul>
+  </div>
+
+  <!-- Best quotes per year -->
+  <div class="card">
+    <h3>💬 Utvalgte sitater gjennom årene</h3>
+    <div class="quotes-grid">
+      <div class="quote-card">«Raskt å ta i bruk. Finner veldig mye relevant til appene vi skal lage. Får enklere konsistens.»<div class="meta">Frontend-utvikler · 2022</div></div>
+      <div class="quote-card">«Det ville vært nyttig å ha komponenter mer orientert mot interne brukere når vi bygger interne verktøy.»<div class="meta">Utvikler · 2023</div></div>
+      <div class="quote-card">«Vi har sett på tvers av grensesnittene våre – ulikt oppsett av modaler, ulik bruk av tabeller...»<div class="meta">Designer · 2024</div></div>
+      <div class="quote-card">«Linje er en gullressurs.»<div class="meta">Frontend-utvikler · 2025</div></div>
+      <div class="quote-card">«Versjoneringsstrategien gir oss smerte. I praksis må man alltid være på siste versjon av alle pakker.»<div class="meta">Fullstack-utvikler · 2025</div></div>
+      <div class="quote-card">«Det var utrolig fint da Natacha kom innom teamet for å kartlegge behovene våre! Mer av dette :)»<div class="meta">Designer · 2025</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FORBEDRINGSFORSLAG -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="forslag">
+  <h2 class="section-title">Anbefalte forbedringsforslag</h2>
+  <p class="section-desc">Basert på analyse av tilbakemeldinger fra alle fire år, prioritert etter frekvens, trendretning og strategisk viktighet.</p>
+
+  <div class="action-grid">
+    <div class="action-card">
+      <div class="priority high">Høy prioritet</div>
+      <h4>1. Forenkle farger og tokens</h4>
+      <p>Fargene er det mest frustrerende elementet i 2025 (3.76/5, ned fra 4.33). Konsolider til <strong>ett fargebibliotek</strong> i Figma, lag tydelig dokumentasjon med eksempler for semantiske farger, contrast mode og dark mode. Synkroniser navngivning mellom Figma og kode. Vurder en «farge-guide» med konkrete use-cases: «hvilken farge for overflater, tekst, knapper, borders?»</p>
+    </div>
+
+    <div class="action-card">
+      <div class="priority high">Høy prioritet</div>
+      <h4>2. Styrk B2B/partner-støtte</h4>
+      <p>Det mest konsistente forbedringsønsket gjennom <strong>alle fire år</strong>. Lag en B2B-rettet utvidelse med tabeller, avanserte filtre, autocomplete, layoutkomponenter og mønstre for admin-sider. Vurder «byggekloss»-tilnærming der komplekse komponenter eksporteres som deler som kan settes sammen. Prioriter dialog med partner-team.</p>
+    </div>
+
+    <div class="action-card teal">
+      <div class="priority high">Høy prioritet</div>
+      <h4>3. Synkroniser Figma ↔ React</h4>
+      <p>Gjentakende problem i tre år. Vis Figma-komponenter direkte i Linje ved siden av React. Etabler en automatisk prosess for å avdekke avvik. Vurder Figma-plugins eller CI/CD-sjekker som varsler når de er ute av synk.</p>
+    </div>
+
+    <div class="action-card amber">
+      <div class="priority med">Medium prioritet</div>
+      <h4>4. Vurder felles pakkestrategi</h4>
+      <p>Separat versjonering per pakke gir utviklere smerte. Flere foreslår felles versjonering eller mega-pakke (ref. NAV/Aksel). Synliggjør pakkeavhengigheter. Om mega-pakke ikke er aktuelt: lag et verktøy eller en oversikt som viser kompatible versjoner.</p>
+    </div>
+
+    <div class="action-card green">
+      <div class="priority med">Medium prioritet</div>
+      <h4>5. Tydeliggjør bidragsveien</h4>
+      <p>28% i 2025 vil gjerne bidra eller visste ikke at man kan. Lag en synlig «Bidra»-seksjon i Linje med steg-for-steg-guide. Fortsett med teambesøk à la Natacha-modellen. Vurder «lunsj med designsystem-teamet» som lavterskel kontaktpunkt.</p>
+    </div>
+
+    <div class="action-card purple">
+      <div class="priority med">Medium prioritet</div>
+      <h4>6. Bedre onboarding</h4>
+      <p>Noen har aldri fått innføring, og 11% dokumentasjonen er nok. Lag en onboarding-pakke som del av Entur-onboarding. Vurder årlig «What's new»-demo for eksisterende ansatte. Inkluder farger/tokens-workshop for designere.</p>
+    </div>
+
+    <div class="action-card">
+      <div class="priority low">Lavere prioritet</div>
+      <h4>7. Utforsk open source / whitelabel</h4>
+      <p>Nytt tema i 2025, nevnt av 3–4 respondenter. Evaluere om en open source-strategi er mulig og ønskelig. Kan øke adopsjonen og redusere arbeid for partner-team.</p>
+    </div>
+
+    <div class="action-card teal">
+      <div class="priority low">Lavere prioritet</div>
+      <h4>8. AI-integrasjon</h4>
+      <p>Kreativt forslag fra 2025: MCP for linje.entur.no, nedlastbar designfil for bruk med AI-verktøy. Kan gjøre designsystemet tilgjengelig i AI-drevne workflows (Cursor, Gemini, osv.).</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- KONKLUSJON -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section">
+  <h2 class="section-title">Konklusjon</h2>
+  <div class="summary-blue">
+    <h3>🎯 Overordnet vurdering</h3>
+    <p>Entur Linje designsystem er et <strong>godt og verdsatt verktøy</strong> med konsekvent høy tilfredshet gjennom fire år. Teamets tilgjengelighet, Slack-support og dokumentasjonen er klare styrker som bør bevares.</p>
+    <p style="margin-top:8px">De nedadgående trendene (totaltilfredshet, tidsbesparelse, kontaktnytte) er sannsynligvis en naturlig konsekvens av at designsystemet nå brukes av <strong>langt flere og mer diverse brukere</strong> – inkludert B2B-team, partnere og backend-utviklere som har andre behov enn de opprinnelige kjernebrukerne.</p>
+    <p style="margin-top:8px">For å snu trendene bør teamet fokusere på de tre mest presserende områdene: <strong>(1) forenkle farger/tokens, (2) styrke B2B-støtten, (3) synkronisere Figma ↔ React</strong>. Disse tre alene vil adressere 70–80% av all negativ kvalitativ tilbakemelding fra 2025-undersøkelsen.</p>
+  </div>
+</div>
+
+<div class="footer">
+  Entur Linje Designsystem · 4-års analyse 2022–2025 · 116 respondenter totalt<br>
+  Generert fra spørreundersøkelser gjennomført i oktober/desember hvert år
+</div>
+
+</body>
+</html>
